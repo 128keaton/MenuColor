@@ -16,7 +16,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	@IBAction func didClickQuit(_ sender: AnyObject) {
 		NSApplication.shared().terminate(self)
 	}
-
+	let screenHeight = NSHeight((NSScreen.screens()?.first?.frame)!)
 	var active = false
 	var currentColor: NSColor?
 	var currentImage: NSImage?
@@ -25,45 +25,45 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 		statusItem.menu = statusMenu
 		statusItem.image = self.roundCorners(image: NSImage.swatchWithColor(color: NSColor.white, size: NSSize(width: 10, height: 10)), width: 10, height: 10)
-		
-			NSEvent.addGlobalMonitorForEvents(matching: NSEventMask.mouseMoved) { ( event) in
-				if self.active == true {
-					guard let image = self.getColor() else {
-						print("Whoops, no color!")
-						return
-					}
-					
-					
-					
-					self.statusItem.view?.layer?.borderColor = NSColor.white.cgColor
-					self.statusItem.view?.layer?.cornerRadius = 8
-					
-					let actualImage = NSImage(cgImage: image, size: NSSize(width: 10, height: 10))
-					
-					
-					self.statusItem.image = self.roundCorners(image: actualImage, width: 10, height: 10)
-					self.currentImage = self.statusItem.image
-					let mouseLoc = NSEvent.mouseLocation()
-					let actualImage2 = NSImage(cgImage: image, size: NSSize(width: 60, height: 60))
-					let cur = NSCursor.init(image: actualImage2, hotSpot: mouseLoc)
-					cur.push()
-					cur.pop()
+
+		NSEvent.addGlobalMonitorForEvents(matching: NSEventMask.mouseMoved) { ( event) in
+			if self.active == true {
+				guard let image = self.getColor() else {
+					print("Whoops, no color!")
+					return
 				}
-			}
+
+
+
+				self.statusItem.view?.layer?.borderColor = NSColor.white.cgColor
+				self.statusItem.view?.layer?.cornerRadius = 8
+
 			
-			 NSEvent.addGlobalMonitorForEvents(matching: NSEventMask.leftMouseDown) { (event) in
-			if self.active == true{
-				if self.currentColor != nil{
-				if self.statusMenu.items.count != 6 {
-					let item = NSMenuItem(title: "UIColor(red: \(self.currentColor!.redComponent), green: \(self.currentColor!.greenComponent), blue: \(self.currentColor!.blueComponent), alpha: \(self.currentColor!.alphaComponent)) ", action: #selector(AppDelegate.copyToClipboard(sender:)), keyEquivalent: "color")
-					item.image = self.currentImage
-					self.statusMenu.insertItem(item, at: 3)
-					
-				} else {
-					self.statusMenu.removeItem(at: 3)
-				}
+
+
+				self.statusItem.image = self.roundCorners(image: NSImage.swatchWithColor(color: self.currentColor!, size: NSSize(width: 10, height: 10)), width: 10, height: 10)
+				self.currentImage = self.statusItem.image
+				let mouseLoc = NSEvent.mouseLocation()
+				let actualImage2 = NSImage(cgImage: image, size: NSSize(width: 60, height: 60))
+				let cur = NSCursor.init(image: actualImage2, hotSpot: mouseLoc)
+				cur.push()
+				cur.pop()
+			}
 		}
-		
+
+		NSEvent.addGlobalMonitorForEvents(matching: NSEventMask.leftMouseDown) { (event) in
+			if self.active == true {
+				if self.currentColor != nil {
+					if self.statusMenu.items.count != 6 {
+						let item = NSMenuItem(title: "UIColor(red: \(self.currentColor!.redComponent), green: \(self.currentColor!.greenComponent), blue: \(self.currentColor!.blueComponent), alpha: \(self.currentColor!.alphaComponent)) ", action: #selector(AppDelegate.copyToClipboard(sender:)), keyEquivalent: "color")
+						item.image = self.currentImage
+						self.statusMenu.insertItem(item, at: 3)
+
+					} else {
+						self.statusMenu.removeItem(at: 3)
+					}
+				}
+
 				self.active = false
 			}
 		}
@@ -98,7 +98,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	}
 
 	@IBAction func setActive(sender: NSMenuItem) {
-		if active == false{
+		if active == false {
 			let cur = NSCursor.crosshair()
 			cur.push()
 			cur.pop()
@@ -139,18 +139,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 		}
 
-		guard let image = CGDisplayCreateImage(CGMainDisplayID(), rect: CGRect(x: mouseLoc.x, y: mouseLoc.y, width: 0, height: 0)) else {
+
+		guard let image = CGDisplayCreateImage(CGMainDisplayID(), rect: CGRect(x: mouseLoc.x, y: screenHeight - mouseLoc.y, width: 0, height: 0)) else {
 			print("woops")
 			return nil
 		}
 		let bitmap = NSBitmapImageRep.init(cgImage: image)
 
 		let color = bitmap.colorAt(x: 0, y: 0)
-		
-		currentColor = color
-		print("UIColor(red: \(color!.redComponent), green: \(color!.greenComponent), blue: \(color!.blueComponent), alpha: \(color!.alphaComponent)) ")
+		if color != nil {
 
-	
+
+			currentColor = color
+			print("UIColor(red: \(color!.redComponent), green: \(color!.greenComponent), blue: \(color!.blueComponent), alpha: \(color!.alphaComponent)) ")
+		}
+
 		return image
 	}
 
