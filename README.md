@@ -7,5 +7,4 @@ A color picker for Swift programmers!
 
 # Issues:
 * Only works with main monitor
-* Sometimes just grabs color behind window
-* Cursor hard to use
+
