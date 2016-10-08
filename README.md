@@ -2,6 +2,9 @@
 A color picker for Swift programmers!
 ![demo](https://github.com/128keaton/MenuColor/blob/master/repo_asset/demo.gif)
 
+# Demo:
+![menu](https://github.com/128keaton/MenuColor/blob/master/repo_asset/menu.png)
+![playground](https://github.com/128keaton/MenuColor/blob/master/repo_asset/playground.png)
 # Installation:
 * Download, compile, run!
 
