@@ -151,7 +151,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 
 			currentColor = color
-			print("UIColor(red: \(color!.redComponent), green: \(color!.greenComponent), blue: \(color!.blueComponent), alpha: \(color!.alphaComponent)) ")
+			print("UIColor(red: \( color!.redComponent.roundTo(places: 3)), green: \( color!.greenComponent.roundTo(places: 3)), blue: \( color!.blueComponent.roundTo(places: 3)), alpha: \(color!.alphaComponent.roundTo(places: 3))) ")
 		}
 
 		return image
@@ -176,5 +176,12 @@ extension NSImage {
 		color.drawSwatch(in: NSMakeRect(0, 0, size.width, size.height))
 		image.unlockFocus()
 		return image
+	}
+}
+extension CGFloat {
+	/// Rounds the double to decimal places value
+	func roundTo(places:Int) -> CGFloat {
+		let divisor = pow(10.0, CGFloat(places))
+		return (self * divisor).rounded() / divisor
 	}
 }
