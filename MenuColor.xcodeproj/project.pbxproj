@@ -12,6 +12,8 @@
 		8A5BF7B51DA949E400E6B1C2 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8A5BF7B31DA949E400E6B1C2 /* MainMenu.xib */; };
 		8A5BF7C01DA949E400E6B1C2 /* MenuColorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5BF7BF1DA949E400E6B1C2 /* MenuColorTests.swift */; };
 		8A5BF7CB1DA949E400E6B1C2 /* MenuColorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5BF7CA1DA949E400E6B1C2 /* MenuColorUITests.swift */; };
+		8A5BF7DA1DA9687A00E6B1C2 /* PreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8A5BF7D91DA9687A00E6B1C2 /* PreferencesWindow.xib */; };
+		8A5BF7DC1DA9689100E6B1C2 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5BF7DB1DA9689100E6B1C2 /* Preferences.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +45,8 @@
 		8A5BF7C61DA949E400E6B1C2 /* MenuColorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MenuColorUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A5BF7CA1DA949E400E6B1C2 /* MenuColorUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuColorUITests.swift; sourceTree = "<group>"; };
 		8A5BF7CC1DA949E400E6B1C2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8A5BF7D91DA9687A00E6B1C2 /* PreferencesWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PreferencesWindow.xib; sourceTree = "<group>"; };
+		8A5BF7DB1DA9689100E6B1C2 /* Preferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +100,8 @@
 				8A5BF7AF1DA949E400E6B1C2 /* AppDelegate.swift */,
 				8A5BF7B11DA949E400E6B1C2 /* Assets.xcassets */,
 				8A5BF7B31DA949E400E6B1C2 /* MainMenu.xib */,
+				8A5BF7DB1DA9689100E6B1C2 /* Preferences.swift */,
+				8A5BF7D91DA9687A00E6B1C2 /* PreferencesWindow.xib */,
 				8A5BF7B61DA949E400E6B1C2 /* Info.plist */,
 			);
 			path = MenuColor;
@@ -230,6 +236,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8A5BF7B21DA949E400E6B1C2 /* Assets.xcassets in Resources */,
+				8A5BF7DA1DA9687A00E6B1C2 /* PreferencesWindow.xib in Resources */,
 				8A5BF7B51DA949E400E6B1C2 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -255,6 +262,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A5BF7DC1DA9689100E6B1C2 /* Preferences.swift in Sources */,
 				8A5BF7B01DA949E400E6B1C2 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -396,10 +404,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = Z48RKT6B3T;
 				INFOPLIST_FILE = MenuColor/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_BUNDLE_IDENTIFIER = com.128keaton.MenuColor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
@@ -410,10 +420,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = Z48RKT6B3T;
 				INFOPLIST_FILE = MenuColor/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_BUNDLE_IDENTIFIER = com.128keaton.MenuColor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;

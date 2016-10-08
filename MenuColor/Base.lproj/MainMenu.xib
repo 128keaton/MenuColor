@@ -20,16 +20,22 @@
         <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
         <menu id="eCg-gF-RmL">
             <items>
-                <menuItem title="Quit" id="p1D-yg-fSv">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                    <connections>
-                        <action selector="didClickQuit:" target="Voe-Tx-rLC" id="mIe-5p-kgv"/>
-                    </connections>
-                </menuItem>
                 <menuItem title="Picker" id="Ah1-3B-I10">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="setActiveWithSender:" target="Voe-Tx-rLC" id="sH1-B6-N3z"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Settings" id="tXb-u0-wQk">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="settings:" target="Voe-Tx-rLC" id="etb-zo-nmi"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Quit" id="p1D-yg-fSv">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="didClickQuit:" target="Voe-Tx-rLC" id="mIe-5p-kgv"/>
                     </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="8NI-8D-lw5"/>

@@ -12,9 +12,14 @@ import Cocoa
 class AppDelegate: NSObject, NSApplicationDelegate {
 
 	@IBOutlet var statusMenu: NSMenu!
+	let preferencesWindow = PreferencesWindow()
 	let statusItem = NSStatusBar.system().statusItem(withLength: NSVariableStatusItemLength)
 	@IBAction func didClickQuit(_ sender: AnyObject) {
 		NSApplication.shared().terminate(self)
+	}
+	@IBAction func settings(_ sender: AnyObject) {
+		
+		preferencesWindow.showWindow(nil)
 	}
 	let screenHeight = NSHeight((NSScreen.screens()?.first?.frame)!)
 	var active = false
@@ -54,13 +59,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		NSEvent.addGlobalMonitorForEvents(matching: NSEventMask.leftMouseDown) { (event) in
 			if self.active == true {
 				if self.currentColor != nil {
-					if self.statusMenu.items.count != 6 {
-						let item = NSMenuItem(title: "UIColor(red: \( self.currentColor!.redComponent.roundTo(places: 3)), green: \( self.currentColor!.greenComponent.roundTo(places: 3)), blue: \( self.currentColor!.blueComponent.roundTo(places: 3)), alpha: \(self.currentColor!.alphaComponent.roundTo(places: 3))) ", action: #selector(AppDelegate.copyToClipboard(sender:)), keyEquivalent: "color")
+					if self.statusMenu.items.count != 7 {
+						let item = NSMenuItem(title: self.getAppropriateString(color: self.currentColor!), action: #selector(AppDelegate.copyToClipboard(sender:)), keyEquivalent: "color")
 						item.image = self.currentImage
-						self.statusMenu.insertItem(item, at: 3)
+						
+						
+						self.statusMenu.insertItem(item, at: 4)
 
 					} else {
-						self.statusMenu.removeItem(at: 3)
+						self.statusMenu.removeItem(at: 4)
 					}
 				}
 
@@ -151,7 +158,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 
 			currentColor = color
-			print("UIColor(red: \( color!.redComponent.roundTo(places: 3)), green: \( color!.greenComponent.roundTo(places: 3)), blue: \( color!.blueComponent.roundTo(places: 3)), alpha: \(color!.alphaComponent.roundTo(places: 3))) ")
+
 		}
 
 		return image
@@ -165,6 +172,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 	func applicationWillTerminate(_ aNotification: Notification) {
 		// Insert code here to tear down your application
+	}
+	func getAppropriateString(color: NSColor) -> String{
+		if (UserDefaults.standard.object(forKey: "swiftColor") == nil) || UserDefaults.standard.bool(forKey: "swiftColor") == true{
+			return self.getUIColor(color: color)
+		}else{
+			return self.getHex(color: color) 
+		}
+	}
+	func getHex(color: NSColor) -> String{
+		return color.hexString
+	}
+	func getUIColor(color: NSColor) -> String {
+		return "UIColor(red: \( color.redComponent.roundTo(places: 3)), green: \( color.greenComponent.roundTo(places: 3)), blue: \( color.blueComponent.roundTo(places: 3)), alpha: \(color.alphaComponent.roundTo(places: 3))) "
 	}
 
 
@@ -184,4 +204,16 @@ extension CGFloat {
 		let divisor = pow(10.0, CGFloat(places))
 		return (self * divisor).rounded() / divisor
 	}
+}
+
+extension NSColor {
+	
+	var hexString: String {
+		let red = Int(round(self.redComponent * 0xFF))
+		let green = Int(round(self.greenComponent * 0xFF))
+		let blue = Int(round(self.blueComponent * 0xFF))
+		let hexString = NSString(format: "#%02X%02X%02X", red, green, blue)
+		return hexString as String
+	}
+	
 }
