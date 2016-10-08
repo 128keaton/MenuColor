@@ -55,7 +55,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 			if self.active == true {
 				if self.currentColor != nil {
 					if self.statusMenu.items.count != 6 {
-						let item = NSMenuItem(title: "UIColor(red: \(self.currentColor!.redComponent), green: \(self.currentColor!.greenComponent), blue: \(self.currentColor!.blueComponent), alpha: \(self.currentColor!.alphaComponent)) ", action: #selector(AppDelegate.copyToClipboard(sender:)), keyEquivalent: "color")
+						let item = NSMenuItem(title: "UIColor(red: \( self.currentColor!.redComponent.roundTo(places: 3)), green: \( self.currentColor!.greenComponent.roundTo(places: 3)), blue: \( self.currentColor!.blueComponent.roundTo(places: 3)), alpha: \(self.currentColor!.alphaComponent.roundTo(places: 3))) ", action: #selector(AppDelegate.copyToClipboard(sender:)), keyEquivalent: "color")
 						item.image = self.currentImage
 						self.statusMenu.insertItem(item, at: 3)
 
