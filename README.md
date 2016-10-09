@@ -11,3 +11,4 @@ A color picker for Swift programmers!
 # Issues:
 * Only works with main monitor
 * Lags a bit (only sometimes)
+* Can't see the icon when you are in light mode
