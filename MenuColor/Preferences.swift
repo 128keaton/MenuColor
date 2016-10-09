@@ -9,24 +9,53 @@
 import Foundation
 import Cocoa
 class PreferencesWindow: NSWindowController {
-	@IBOutlet weak var mode: NSSegmentedControl!
+	@IBOutlet weak var mode: NSPopUpButton?
 	let defaults = UserDefaults.standard
-	override var windowNibName : String! {
+	override var windowNibName: String! {
 		return "PreferencesWindow"
 	}
+
 	override func windowDidLoad() {
 		super.windowDidLoad()
 		self.window?.center()
 		self.window?.makeKeyAndOrderFront(nil)
+		if defaults.object(forKey: "swiftColor") == nil || defaults.bool(forKey: "swiftColor") == true {
+			mode?.selectItem(at: 0)
+		} else {
+			mode?.selectItem(at: 2)
+		}
+
 		NSApp.activate(ignoringOtherApps: true)
 	}
-	@IBAction func valueChanged(sender: NSSegmentedControl){
-		switch sender.selectedSegment {
+
+	@IBAction func goToGithub(sender: NSButton) {
+		let url = NSURL(string: "https://github.com/128keaton/MenuColor/issues/new")!
+		let browserBundleIdentifier = "com.apple.Safari"
+
+		NSWorkspace.shared().open([url as URL],
+		                          withAppBundleIdentifier: browserBundleIdentifier,
+		                          options: [],
+		                          additionalEventParamDescriptor: nil,
+		                          launchIdentifiers: nil)
+	}
+	@IBAction func goToMyWebsite(sender: NSButton) {
+		let url = NSURL(string: "http://128keaton.com")!
+		let browserBundleIdentifier = "com.apple.Safari"
+
+		NSWorkspace.shared().open([url as URL],
+		                          withAppBundleIdentifier: browserBundleIdentifier,
+		                          options: [],
+		                          additionalEventParamDescriptor: nil,
+		                          launchIdentifiers: nil)
+	}
+	@IBAction func valueChanged(sender: NSPopUpButton) {
+
+		switch sender.index(of: sender.selectedItem!) {
 		case 0:
-			defaults.set(false, forKey: "swiftColor")
+			defaults.set(true, forKey: "swiftColor")
 			break
 		case 1:
-			defaults.set(true, forKey: "swiftColor")
+			defaults.set(false, forKey: "swiftColor")
 			break
 		default:
 			break

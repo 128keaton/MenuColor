@@ -18,7 +18,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		NSApplication.shared().terminate(self)
 	}
 	@IBAction func settings(_ sender: AnyObject) {
-		
+		print("open settings")
 		preferencesWindow.showWindow(nil)
 	}
 	let screenHeight = NSHeight((NSScreen.screens()?.first?.frame)!)
@@ -30,22 +30,26 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 		statusItem.menu = statusMenu
 		statusItem.image = self.roundCorners(image: NSImage.swatchWithColor(color: NSColor.white, size: NSSize(width: 10, height: 10)), width: 10, height: 10)
+		setupLoop()
 
+		// Insert code here to initialize your application
+	}
+	func setupLoop(){
 		NSEvent.addGlobalMonitorForEvents(matching: NSEventMask.mouseMoved) { ( event) in
 			if self.active == true {
 				guard let image = self.getColor() else {
 					print("Whoops, no color!")
 					return
 				}
-
-
-
+				
+				
+				
 				self.statusItem.view?.layer?.borderColor = NSColor.white.cgColor
 				self.statusItem.view?.layer?.cornerRadius = 8
-
-			
-
-
+				
+				
+				
+				
 				self.statusItem.image = self.roundCorners(image: NSImage.swatchWithColor(color: self.currentColor!, size: NSSize(width: 10, height: 10)), width: 10, height: 10)
 				self.currentImage = self.statusItem.image
 				let mouseLoc = NSEvent.mouseLocation()
@@ -55,7 +59,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 				cur.pop()
 			}
 		}
-
+		
 		NSEvent.addGlobalMonitorForEvents(matching: NSEventMask.leftMouseDown) { (event) in
 			if self.active == true {
 				if self.currentColor != nil {
@@ -65,16 +69,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 						
 						
 						self.statusMenu.insertItem(item, at: 4)
-
+						
 					} else {
 						self.statusMenu.removeItem(at: 4)
 					}
 				}
-
+				
 				self.active = false
 			}
 		}
-		// Insert code here to initialize your application
+		
+		
 	}
 	func roundCorners(image: NSImage, width: CGFloat = 192, height: CGFloat = 192) -> NSImage {
 		let xRad = width / 2
@@ -132,10 +137,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 			print("error: \(result)")
 
 		}
-		print("\(displayCount) displays:")
-		for i in 0..<displayCount {
-			print("[\(i)] - \(activeDisplays[Int(i)])")
-		}
+	
 		activeDisplays.deallocate(capacity: allocated)
 
 		var displayID: CGDirectDisplayID = 0
