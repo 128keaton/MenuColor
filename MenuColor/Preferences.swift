@@ -8,22 +8,29 @@
 
 import Foundation
 import Cocoa
-class PreferencesWindow: NSWindowController {
+class PreferencesWindow: NSWindowController, NSWindowDelegate {
 	@IBOutlet weak var mode: NSPopUpButton?
+	 var delegate: PreferencesDelegate?
 	let defaults = UserDefaults.standard
 	override var windowNibName: String! {
 		return "PreferencesWindow"
+	}
+	func toFront(){
+			NSApp.activate(ignoringOtherApps: true)
 	}
 
 	override func windowDidLoad() {
 		super.windowDidLoad()
 		self.window?.center()
 		self.window?.makeKeyAndOrderFront(nil)
-		if defaults.object(forKey: "swiftColor") == nil || defaults.bool(forKey: "swiftColor") == true {
+		if defaults.object(forKey: "colorMode") == nil || defaults.object(forKey: "colorMode") as! String == ColorMode.Swift.rawValue {
 			mode?.selectItem(at: 0)
-		} else {
-			mode?.selectItem(at: 2)
+		} else if defaults.object(forKey: "colorMode") as! String == ColorMode.Hex.rawValue {
+			mode?.selectItem(at: 1)
 		}
+		mode?.action = #selector(PreferencesWindow.valueChanged(sender:))
+		mode?.target = self
+		print("Window loaded")
 
 		NSApp.activate(ignoringOtherApps: true)
 	}
@@ -48,18 +55,23 @@ class PreferencesWindow: NSWindowController {
 		                          additionalEventParamDescriptor: nil,
 		                          launchIdentifiers: nil)
 	}
+
 	@IBAction func valueChanged(sender: NSPopUpButton) {
 
 		switch sender.index(of: sender.selectedItem!) {
 		case 0:
-			defaults.set(true, forKey: "swiftColor")
+			defaults.set(ColorMode.Swift.rawValue, forKey: "colorMode")
 			break
 		case 1:
-			defaults.set(false, forKey: "swiftColor")
+			defaults.set(ColorMode.Hex.rawValue, forKey: "colorMode")
 			break
 		default:
 			break
 		}
 		defaults.synchronize()
+		self.delegate?.updated()
 	}
+}
+protocol PreferencesDelegate {
+	func updated()
 }

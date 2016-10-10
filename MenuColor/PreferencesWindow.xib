@@ -7,12 +7,13 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="PreferencesWindow" customModule="MenuColor" customModuleProvider="target">
             <connections>
+                <outlet property="mode" destination="sQc-Tm-hRN" id="BDm-zO-GHR"/>
                 <outlet property="window" destination="fve-0d-4qn" id="mQ3-yo-cEq"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <window title="Settings" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" frameAutosaveName="" animationBehavior="default" id="fve-0d-4qn">
+        <window title="Settings" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" hidesOnDeactivate="YES" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" frameAutosaveName="" animationBehavior="default" id="fve-0d-4qn">
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="408" height="120"/>
@@ -44,7 +45,7 @@
                             </menu>
                         </popUpButtonCell>
                         <connections>
-                            <action selector="valueChangedWithSender:" target="-2" id="48j-sC-Qwe"/>
+                            <action selector="valueChangedWithSender:" target="-2" id="JiF-Y5-n5M"/>
                         </connections>
                     </popUpButton>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tqo-Kh-wzv">
@@ -71,6 +72,9 @@
                     </button>
                 </subviews>
             </view>
+            <connections>
+                <outlet property="delegate" destination="-2" id="T5G-Oa-MXj"/>
+            </connections>
             <point key="canvasLocation" x="157" y="-125"/>
         </window>
     </objects>
