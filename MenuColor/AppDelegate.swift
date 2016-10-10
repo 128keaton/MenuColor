@@ -30,6 +30,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 		statusItem.menu = statusMenu
 		statusItem.image = self.roundCorners(image: NSImage.swatchWithColor(color: NSColor.white, size: NSSize(width: 10, height: 10)), width: 10, height: 10)
+		statusItem.image?.isTemplate = true
 		setupLoop()
 
 		// Insert code here to initialize your application
@@ -44,7 +45,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 				
 				
 				
-				self.statusItem.view?.layer?.borderColor = NSColor.white.cgColor
+				self.statusItem.view?.layer?.borderColor = NSColor.black.cgColor
+				self.statusItem.view?.layer?.borderWidth = 4
 				self.statusItem.view?.layer?.cornerRadius = 8
 				
 				
@@ -92,15 +94,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		composedImage.lockFocus()
 		let ctx = NSGraphicsContext.current()
 		ctx?.imageInterpolation = NSImageInterpolation.high
-		NSColor.white.set()
+		NSColor.black.set()
 		let imageFrame = NSRect(x: 0, y: 0, width: width, height: height)
 		let clipPath = NSBezierPath(roundedRect: imageFrame, xRadius: xRad, yRadius: yRad)
-
 		clipPath.windingRule = NSWindingRule.evenOddWindingRule
-		clipPath.addClip()
+			clipPath.addClip()
 		clipPath.appendRoundedRect(NSRect(x: 0, y: 0, width: width, height: height), xRadius: xRad, yRadius: yRad)
 		clipPath.lineWidth = 2
+	 
 		clipPath.stroke()
+	
+	
 
 		let rect = NSRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
 		image.draw(at: NSZeroPoint, from: rect, operation: NSCompositingOperation.sourceOver, fraction: 1)
