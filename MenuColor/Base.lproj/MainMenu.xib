@@ -12,9 +12,10 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="MenuColor" customModuleProvider="target">
+        <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="MenuColor" customModuleProvider="target"/>
+        <customObject id="cdM-ce-CpB" customClass="MenuController" customModule="MenuColor" customModuleProvider="target">
             <connections>
-                <outlet property="statusMenu" destination="eCg-gF-RmL" id="2qD-yL-haW"/>
+                <outlet property="statusMenu" destination="eCg-gF-RmL" id="Yn2-FY-Pvi"/>
             </connections>
         </customObject>
         <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
@@ -23,19 +24,19 @@
                 <menuItem title="Picker" id="Ah1-3B-I10">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
-                        <action selector="setActiveWithSender:" target="Voe-Tx-rLC" id="sH1-B6-N3z"/>
+                        <action selector="setActiveWithSender:" target="cdM-ce-CpB" id="VJE-Sg-Tj7"/>
                     </connections>
                 </menuItem>
                 <menuItem title="Settings" id="tXb-u0-wQk">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
-                        <action selector="settings:" target="Voe-Tx-rLC" id="etb-zo-nmi"/>
+                        <action selector="settings:" target="cdM-ce-CpB" id="r7F-Oc-iwW"/>
                     </connections>
                 </menuItem>
                 <menuItem title="Quit" id="p1D-yg-fSv">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
-                        <action selector="didClickQuit:" target="Voe-Tx-rLC" id="mIe-5p-kgv"/>
+                        <action selector="didClickQuit:" target="cdM-ce-CpB" id="Qv9-on-3cH"/>
                     </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="8NI-8D-lw5"/>

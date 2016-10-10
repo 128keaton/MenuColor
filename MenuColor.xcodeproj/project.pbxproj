@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8A0F52661DAB4BE1001AF62F /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0F52651DAB4BE1001AF62F /* Enums.swift */; };
+		8A0F52691DAB5227001AF62F /* NSColor+Hex.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A0F52681DAB5227001AF62F /* NSColor+Hex.m */; };
+		8A0F526D1DAB59BD001AF62F /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0F526C1DAB59BD001AF62F /* MenuController.swift */; };
 		8A5BF7B01DA949E400E6B1C2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5BF7AF1DA949E400E6B1C2 /* AppDelegate.swift */; };
 		8A5BF7B21DA949E400E6B1C2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8A5BF7B11DA949E400E6B1C2 /* Assets.xcassets */; };
 		8A5BF7B51DA949E400E6B1C2 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8A5BF7B31DA949E400E6B1C2 /* MainMenu.xib */; };
@@ -34,6 +37,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8A0F52651DAB4BE1001AF62F /* Enums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
+		8A0F52671DAB5226001AF62F /* MenuColor-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MenuColor-Bridging-Header.h"; sourceTree = "<group>"; };
+		8A0F52681DAB5227001AF62F /* NSColor+Hex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSColor+Hex.m"; sourceTree = "<group>"; };
+		8A0F526A1DAB54C9001AF62F /* NSColor+Hex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+Hex.h"; sourceTree = "<group>"; };
+		8A0F526C1DAB59BD001AF62F /* MenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
 		8A5BF7AC1DA949E400E6B1C2 /* MenuColor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MenuColor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A5BF7AF1DA949E400E6B1C2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8A5BF7B11DA949E400E6B1C2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -74,6 +82,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8A0F526B1DAB551D001AF62F /* NSColor+Hex */ = {
+			isa = PBXGroup;
+			children = (
+				8A0F52681DAB5227001AF62F /* NSColor+Hex.m */,
+				8A0F526A1DAB54C9001AF62F /* NSColor+Hex.h */,
+			);
+			name = "NSColor+Hex";
+			sourceTree = "<group>";
+		};
 		8A5BF7A31DA949E400E6B1C2 = {
 			isa = PBXGroup;
 			children = (
@@ -97,12 +114,16 @@
 		8A5BF7AE1DA949E400E6B1C2 /* MenuColor */ = {
 			isa = PBXGroup;
 			children = (
+				8A0F526B1DAB551D001AF62F /* NSColor+Hex */,
 				8A5BF7AF1DA949E400E6B1C2 /* AppDelegate.swift */,
+				8A0F526C1DAB59BD001AF62F /* MenuController.swift */,
+				8A0F52651DAB4BE1001AF62F /* Enums.swift */,
 				8A5BF7B11DA949E400E6B1C2 /* Assets.xcassets */,
 				8A5BF7B31DA949E400E6B1C2 /* MainMenu.xib */,
 				8A5BF7DB1DA9689100E6B1C2 /* Preferences.swift */,
 				8A5BF7D91DA9687A00E6B1C2 /* PreferencesWindow.xib */,
 				8A5BF7B61DA949E400E6B1C2 /* Info.plist */,
+				8A0F52671DAB5226001AF62F /* MenuColor-Bridging-Header.h */,
 			);
 			path = MenuColor;
 			sourceTree = "<group>";
@@ -194,6 +215,7 @@
 					8A5BF7AB1DA949E400E6B1C2 = {
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = Z48RKT6B3T;
+						LastSwiftMigration = 0800;
 						ProvisioningStyle = Automatic;
 					};
 					8A5BF7BA1DA949E400E6B1C2 = {
@@ -262,7 +284,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A0F526D1DAB59BD001AF62F /* MenuController.swift in Sources */,
+				8A0F52691DAB5227001AF62F /* NSColor+Hex.m in Sources */,
 				8A5BF7DC1DA9689100E6B1C2 /* Preferences.swift in Sources */,
+				8A0F52661DAB4BE1001AF62F /* Enums.swift in Sources */,
 				8A5BF7B01DA949E400E6B1C2 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -404,6 +429,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = Z48RKT6B3T;
@@ -412,6 +438,8 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_BUNDLE_IDENTIFIER = com.128keaton.MenuColor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "MenuColor/MenuColor-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -420,6 +448,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = Z48RKT6B3T;
@@ -428,6 +457,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_BUNDLE_IDENTIFIER = com.128keaton.MenuColor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "MenuColor/MenuColor-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
@@ -513,6 +543,7 @@
 				8A5BF7D11DA949E400E6B1C2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8A5BF7D21DA949E400E6B1C2 /* Build configuration list for PBXNativeTarget "MenuColorTests" */ = {
 			isa = XCConfigurationList;
@@ -521,6 +552,7 @@
 				8A5BF7D41DA949E400E6B1C2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8A5BF7D51DA949E400E6B1C2 /* Build configuration list for PBXNativeTarget "MenuColorUITests" */ = {
 			isa = XCConfigurationList;
@@ -529,6 +561,7 @@
 				8A5BF7D71DA949E400E6B1C2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
