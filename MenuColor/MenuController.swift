@@ -9,288 +9,275 @@
 import Foundation
 import Cocoa
 class MenuController: NSObject, PreferencesDelegate {
-	
 
-	@IBOutlet var statusMenu: NSMenu!
-	
-	var preferencesWindow: PreferencesWindow!
-	let statusItem = NSStatusBar.system().statusItem(withLength: NSVariableStatusItemLength)
 
-	let screenHeight = NSHeight((NSScreen.screens()?.first?.frame)!)
-	var active = false
-	var currentColor: NSColor?
-	var currentImage: NSImage?
+    @IBOutlet var statusMenu: NSMenu!
 
+    var preferencesWindow: PreferencesWindow!
+    let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
 
-	var history = [[String: AnyObject]]()
-	var mode: ColorMode!
+    let screenHeight = NSHeight((NSScreen.screens.first?.frame)!)
+    var active = false
+    var currentColor: NSColor?
+    var currentImage: NSImage?
 
 
-	override func awakeFromNib() {
-		preferencesWindow = PreferencesWindow()
-		preferencesWindow.delegate = self
+    var history = [[String: AnyObject]]()
+    var mode: ColorMode!
 
-		statusItem.menu = statusMenu
-		statusItem.image = self.roundCorners(image: NSImage.swatchWithColor(color: NSColor.white, size: NSSize(width: 10, height: 10)), width: 10, height: 10)
-		statusItem.image?.isTemplate = true
-		setupLoop()
 
-		guard let colorMode = UserDefaults.standard.object(forKey: "colorMode")
-			else {
-			mode = ColorMode.Swift
-			return
-		}
-		mode = ColorMode(rawValue: colorMode as! String)
+    override func awakeFromNib() {
+        preferencesWindow = PreferencesWindow()
+        preferencesWindow.delegate = self
 
-	}
-	
-	@IBAction func didClickQuit(_ sender: AnyObject) {
-		NSApplication.shared().terminate(self)
-	}
-	@IBAction func settings(_ sender: AnyObject) {
-		print("open settings")
-		preferencesWindow.window?.makeKeyAndOrderFront(self)
-		preferencesWindow.toFront()
-	}
-	
-	
-	func updated() {
-		let colorMode = UserDefaults.standard.object(forKey: "colorMode") as! String
-		print("Updated: " + colorMode)
-		self.mode = ColorMode(rawValue: colorMode)
+        statusItem.menu = statusMenu
+        statusItem.image = self.roundCorners(image: NSImage.swatchWithColor(color: NSColor.white, size: NSSize(width: 10, height: 10)), width: 10, height: 10)
+        statusItem.image?.isTemplate = true
+        setupLoop()
 
-		self.rewriteHistory()
-	}
-	
-	
-	func setupLoop() {
+        guard let colorMode = UserDefaults.standard.object(forKey: "colorMode")
+            else {
+                mode = ColorMode.Swift
+                return
+        }
+        mode = ColorMode(rawValue: colorMode as! String)
 
-		NSEvent.addGlobalMonitorForEvents(matching: NSEventMask.mouseMoved) { (event) in
+    }
 
-			let mouseLoc = NSEvent.mouseLocation()
-			if self.active == true {
-				self.getColor(point: mouseLoc)
+    @IBAction func didClickQuit(_ sender: AnyObject) {
+        NSApplication.shared.terminate(self)
+    }
+    
+    @IBAction func settings(_ sender: AnyObject) {
+        print("open settings")
+        preferencesWindow.window?.makeKeyAndOrderFront(self)
+    }
 
-				self.statusItem.view?.layer?.borderColor = NSColor.black.cgColor
-				self.statusItem.view?.layer?.borderWidth = 4
-				self.statusItem.view?.layer?.cornerRadius = 8
-
-
-				self.statusItem.image =  self.roundCorners(image: NSImage.swatchWithColor(color: self.currentColor!, size: NSSize(width: 10, height: 10)), width: 10, height: 10)
-				self.currentImage = self.statusItem.image
-
-
-			}
-		}
-
-
-		NSEvent.addGlobalMonitorForEvents(matching: NSEventMask.leftMouseDown) { (event) in
-			if self.active == true {
-				guard let color = self.currentColor
-					else {
+    func updated() {
+        let colorMode = UserDefaults.standard.object(forKey: "colorMode") as! String
+        print("Updated: " + colorMode)
+        self.mode = ColorMode(rawValue: colorMode)
 
-					return
-				}
-				if self.history.count > 4 {
-					self.history.removeLast()
-				}
+        self.rewriteHistory()
+    }
 
+    func setupLoop() {
 
-				self.history.append(["color": color, "mode": self.mode as AnyObject])
+        NSEvent.addGlobalMonitorForEvents(matching: NSEvent.EventTypeMask.mouseMoved) { (event) in
 
+            let mouseLoc = NSEvent.mouseLocation
+            if self.active == true {
+                self.getColor(point: mouseLoc)
 
-				self.refreshHistory()
-				self.active = false
-			}
-		}
+                self.statusItem.view?.layer?.borderColor = NSColor.black.cgColor
+                self.statusItem.view?.layer?.borderWidth = 4
+                self.statusItem.view?.layer?.cornerRadius = 8
 
 
-	}
+                self.statusItem.image = self.roundCorners(image: NSImage.swatchWithColor(color: self.currentColor!, size: NSSize(width: 10, height: 10)), width: 10, height: 10)
+                self.currentImage = self.statusItem.image
 
 
-	
+            }
+        }
 
 
+        NSEvent.addGlobalMonitorForEvents(matching: NSEvent.EventTypeMask.leftMouseDown) { (event) in
+            if self.active == true {
+                guard let color = self.currentColor
+                    else {
 
-	func rewriteHistory() {
-
-
-		//Why Apple doesn't let me iterate and remove I have no idea, but this works..
-			for item in self.statusMenu.items {
-				if item.image != nil {
-					self.statusMenu.removeItem(item)
-				}
-			}
-
-		refreshHistory()
-	}
-	func refreshHistory() {
-		print("refreshing history \(self.history.count)")
-		
+                        return
+                }
+                if self.history.count > 4 {
+                    self.history.removeLast()
+                }
 
-		var newItem: NSMenuItem?
+                self.history.append(["color": color, "mode": self.mode as AnyObject])
 
-		for item in history {
-			guard let color = item["color"] as? NSColor
-				else {
-				print("No color value \(item)")
-				return
-			}
-			if self.mode == ColorMode.Swift {
-				let colorFormatted = self.getUIColor(color: color)
-				newItem = NSMenuItem(title: colorFormatted, action: #selector(MenuController.copyToClipboard(sender:)), keyEquivalent: "color")
-				
-				newItem?.image = NSImage.swatchWithColor(color: color, size: NSSize(width: 10, height: 10))
-				print("Swift mode")
-			} else if self.mode == ColorMode.Hex {
-				let colorFormatted = self.getHex(color: color)
-				newItem = NSMenuItem(title: colorFormatted, action: #selector(MenuController.copyToClipboard(sender:)), keyEquivalent: "color")
-				newItem?.image = NSImage.swatchWithColor(color: color, size: NSSize(width: 10, height: 10))
+                self.refreshHistory()
+                self.active = false
+            }
+        }
 
-			}
-			if newItem != nil {
-				newItem?.action = #selector(MenuController.copyToClipboard(sender:))
-				newItem?.isEnabled = true
-				newItem?.target = self
-				self.statusMenu.addItem(newItem!)
-			}
-		}
-	
 
+    }
 
-	}
+    func rewriteHistory() {
+        //Why Apple doesn't let me iterate and remove I have no idea, but this works..
+        for item in self.statusMenu.items {
+            if item.image != nil {
+                self.statusMenu.removeItem(item)
+            }
+        }
+        refreshHistory()
+    }
+    
+    func refreshHistory() {
+        print("refreshing history \(self.history.count)")
+        var newItem: NSMenuItem?
 
-	func roundCorners(image: NSImage, width: CGFloat = 192, height: CGFloat = 192) -> NSImage {
-		let xRad = width / 2
-		let yRad = height / 2
-		let existing = image
-		let esize = existing.size
-		let newSize = NSMakeSize(esize.width, esize.height)
-		let composedImage = NSImage(size: newSize)
+        for item in history {
+            guard let color = item["color"] as? NSColor
+                else {
+                    print("No color value \(item)")
+                    return
+            }
+            if self.mode == ColorMode.Swift {
+                let colorFormatted = self.getUIColor(color: color)
+                newItem = NSMenuItem(title: colorFormatted, action: #selector(MenuController.copyToClipboard(sender:)), keyEquivalent: "color")
 
-		composedImage.lockFocus()
-		let ctx = NSGraphicsContext.current()
-		ctx?.imageInterpolation = NSImageInterpolation.high
-		NSColor.gray.setStroke()
-		currentColor?.setFill()
-		
-		let imageFrame = NSRect(x: 0, y: 0, width: width, height: height)
-		let clipPath = NSBezierPath(roundedRect: imageFrame, xRadius: xRad, yRadius: yRad)
-		clipPath.windingRule = NSWindingRule.evenOddWindingRule
-		clipPath.lineWidth = 10
-		clipPath.addClip()
-		clipPath.stroke()
-		
-		clipPath.appendRoundedRect(NSRect(x: 0, y: 0, width: width, height: height), xRadius: xRad, yRadius: yRad)
+                newItem?.image = NSImage.swatchWithColor(color: color, size: NSSize(width: 10, height: 10))
+                print("Swift mode")
+            } else if self.mode == ColorMode.Hex {
+                let colorFormatted = self.getHex(color: color)
+                newItem = NSMenuItem(title: colorFormatted, action: #selector(MenuController.copyToClipboard(sender:)), keyEquivalent: "color")
+                newItem?.image = NSImage.swatchWithColor(color: color, size: NSSize(width: 10, height: 10))
 
+            }
+            if newItem != nil {
+                newItem?.action = #selector(MenuController.copyToClipboard(sender:))
+                newItem?.isEnabled = true
+                newItem?.target = self
+                self.statusMenu.addItem(newItem!)
+            }
+        }
 
 
 
-		let rect = NSRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
-		image.draw(at: NSZeroPoint, from: rect, operation: NSCompositingOperation.sourceOver, fraction: 1)
-		composedImage.unlockFocus()
+    }
 
-		return composedImage
-	}
+    func roundCorners(image: NSImage, width: CGFloat = 192, height: CGFloat = 192) -> NSImage {
+        let xRad = width / 2
+        let yRad = height / 2
+        let existing = image
+        let esize = existing.size
+        let newSize = NSMakeSize(esize.width, esize.height)
+        let composedImage = NSImage(size: newSize)
 
+        composedImage.lockFocus()
+        let ctx = NSGraphicsContext.current
+        ctx?.imageInterpolation = NSImageInterpolation.high
+        NSColor.gray.setStroke()
+        currentColor?.setFill()
 
-	@IBAction func setActive(sender: NSMenuItem) {
-		if active == false {
-			let cur = NSCursor.crosshair()
-			cur.push()
-			cur.pop()
-			active = true
-		}
-	}
+        let imageFrame = NSRect(x: 0, y: 0, width: width, height: height)
+        let clipPath = NSBezierPath(roundedRect: imageFrame, xRadius: xRad, yRadius: yRad)
+        clipPath.windingRule = NSBezierPath.WindingRule.evenOddWindingRule
+        clipPath.lineWidth = 10
+        clipPath.addClip()
+        clipPath.stroke()
 
-	func getColor(point: NSPoint) {
-		let mouseLoc = point
+        clipPath.appendRoundedRect(NSRect(x: 0, y: 0, width: width, height: height), xRadius: xRad, yRadius: yRad)
 
 
 
-		var displayCount: UInt32 = 0;
-		var result = CGGetActiveDisplayList(0, nil, &displayCount)
-		if (result != .success) {
-			print("error: \(result)")
 
-		}
+        let rect = NSRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
+        image.draw(at: NSZeroPoint, from: rect, operation: NSCompositingOperation.sourceOver, fraction: 1)
+        composedImage.unlockFocus()
 
-		let allocated = Int(displayCount)
-		let activeDisplays = UnsafeMutablePointer<CGDirectDisplayID>.allocate(capacity: allocated)
-		result = CGGetActiveDisplayList(displayCount, activeDisplays, &displayCount)
-		if (result != .success) {
-			print("error: \(result)")
+        return composedImage
+    }
 
-		}
 
-		activeDisplays.deallocate(capacity: allocated)
+    @IBAction func setActive(sender: NSMenuItem) {
+        if active == false {
+            let cur = NSCursor.crosshair
+            cur.push()
+            cur.pop()
+            active = true
+        }
+    }
 
-		var displayID: CGDirectDisplayID = 0
+    func getColor(point: NSPoint) {
+        let mouseLoc = point
 
-		let point = CGGetDisplaysWithPoint(mouseLoc, 1, &displayID, &displayCount)
 
-		if point != CGError.success {
 
-		}
+        var displayCount: UInt32 = 0;
+        var result = CGGetActiveDisplayList(0, nil, &displayCount)
+        if (result != .success) {
+            print("error: \(result)")
 
+        }
 
-		guard let image = CGDisplayCreateImage(CGMainDisplayID(), rect: CGRect(x: mouseLoc.x, y: screenHeight - mouseLoc.y, width: 1, height: 1)) else {
-			print("woops")
-			return
-		}
-		let bitmap = NSBitmapImageRep.init(cgImage: image)
+        let allocated = Int(displayCount)
+        let activeDisplays = UnsafeMutablePointer<CGDirectDisplayID>.allocate(capacity: allocated)
+        result = CGGetActiveDisplayList(displayCount, activeDisplays, &displayCount)
+        if (result != .success) {
+            print("error: \(result)")
 
-		let color = bitmap.colorAt(x: 0, y: 0)
-		if color != nil {
-			currentColor = color
+        }
 
+        activeDisplays.deallocate(capacity: allocated)
 
+        var displayID: CGDirectDisplayID = 0
 
-		} else {
-			print("Color is invalid")
-		}
+        let point = CGGetDisplaysWithPoint(mouseLoc, 1, &displayID, &displayCount)
 
+        if point != CGError.success {
 
-	}
+        }
 
-	@IBAction func copyToClipboard(sender: NSMenuItem) {
-		let pasteboard = NSPasteboard.general()
-		pasteboard.clearContents()
-		pasteboard.writeObjects([sender.title as NSPasteboardWriting])
-	}
 
-	func getAppropriateString(color: NSColor) -> String {
-		if (UserDefaults.standard.object(forKey: "colorMode") == nil) || UserDefaults.standard.object(forKey: "colorMode") as! String == ColorMode.Swift.rawValue {
-			return self.getUIColor(color: color)
-		} else if UserDefaults.standard.object(forKey: "colorMode") as! String == ColorMode.Hex.rawValue {
-			return self.getHex(color: color)
-		}
-		return "Error"
-	}
-	func getHex(color: NSColor) -> String {
-		return color.hexadecimalValue()
-	}
-	func getUIColor(color: NSColor) -> String {
-		return "UIColor(red: \( color.redComponent.roundTo(places: 3)), green: \( color.greenComponent.roundTo(places: 3)), blue: \( color.blueComponent.roundTo(places: 3)), alpha: \(color.alphaComponent.roundTo(places: 3))) "
-	}
+        guard let image = CGDisplayCreateImage(CGMainDisplayID(), rect: CGRect(x: mouseLoc.x, y: screenHeight - mouseLoc.y, width: 1, height: 1)) else {
+            print("woops")
+            return
+        }
+        let bitmap = NSBitmapImageRep.init(cgImage: image)
+
+        let color = bitmap.colorAt(x: 0, y: 0)
+        if color != nil {
+            currentColor = color
+
+
+
+        } else {
+            print("Color is invalid")
+        }
+
+
+    }
+
+    @IBAction func copyToClipboard(sender: NSMenuItem) {
+        let pasteboard = NSPasteboard.general
+        pasteboard.clearContents()
+        pasteboard.writeObjects([sender.title as NSPasteboardWriting])
+    }
+
+    func getAppropriateString(color: NSColor) -> String {
+        if (UserDefaults.standard.object(forKey: "colorMode") == nil) || UserDefaults.standard.object(forKey: "colorMode") as! String == ColorMode.Swift.rawValue {
+            return self.getUIColor(color: color)
+        } else if UserDefaults.standard.object(forKey: "colorMode") as! String == ColorMode.Hex.rawValue {
+            return self.getHex(color: color)
+        }
+        return "Error"
+    }
+    func getHex(color: NSColor) -> String {
+        return color.hexadecimalValue()
+    }
+    func getUIColor(color: NSColor) -> String {
+        return "UIColor(red: \(color.redComponent.roundTo(places: 3)), green: \(color.greenComponent.roundTo(places: 3)), blue: \(color.blueComponent.roundTo(places: 3)), alpha: \(color.alphaComponent.roundTo(places: 3))) "
+    }
 
 
 }
 
 extension NSImage {
-	class func swatchWithColor(color: NSColor, size: NSSize) -> NSImage {
-		let image = NSImage(size: size)
-		image.lockFocus()
-		color.drawSwatch(in: NSMakeRect(0, 0, size.width, size.height))
-		image.unlockFocus()
-		return image
-	}
+    class func swatchWithColor(color: NSColor, size: NSSize) -> NSImage {
+        let image = NSImage(size: size)
+        image.lockFocus()
+        color.drawSwatch(in: NSMakeRect(0, 0, size.width, size.height))
+        image.unlockFocus()
+        return image
+    }
 }
 extension CGFloat {
-	/// Rounds the double to decimal places value
-	func roundTo(places: Int) -> CGFloat {
-		let divisor = pow(10.0, CGFloat(places))
-		return (self * divisor).rounded() / divisor
-	}
+    /// Rounds the double to decimal places value
+    func roundTo(places: Int) -> CGFloat {
+        let divisor = pow(10.0, CGFloat(places))
+        return (self * divisor).rounded() / divisor
+    }
 }
 
